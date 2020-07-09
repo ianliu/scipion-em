@@ -54,7 +54,7 @@ class ProtExportDataBases(EMProtocol):
     COORDINATEFILENAME = 'coordinates.cif'
     MASKNAME = 'mask_%d.mrc'
     ADDITIONALVOLUMEDIR = "addMaps"
-    ADDITIONALVOLUMENAME = "map_%02d.mrc"
+    ADDITIONALVOLUMENAME = "map_%02d_%s.mrc"
     MASKDIR = "masks"
     MASKNAME = "mask_%02d.mrc"
     SYMPLIFIED_STRUCT = "symplified_atom_structure.cif"
@@ -161,8 +161,9 @@ class ProtExportDataBases(EMProtocol):
         for counter, map in enumerate(self.exportAdditionalVolumes, 1):
             map = map.get()
             inVolFileName = map.getFileName()
+            volFileName = inVolFileName.split("/")[-1].split(".")[0]
             outVolFileName = os.path.join(outputDir,
-                                    self.ADDITIONALVOLUMENAME % counter)
+                                    self.ADDITIONALVOLUMENAME % (counter, volFileName))
             shifts = map.getOrigin(force=True).getShifts()
             sampling = map.getSamplingRate()
 
@@ -210,7 +211,6 @@ class ProtExportDataBases(EMProtocol):
             ccp4header.fixFile(inVolFileName, outVolFileName, shifts,
                                sampling=sampling)
 
-
     def exportAtomStructStep(self):
         exportAtomStruct = self.exportAtomStruct.get()
         originStructPath = exportAtomStruct.getFileName()
@@ -249,7 +249,6 @@ class ProtExportDataBases(EMProtocol):
                                destinyStructPath, log)
             except Exception as e:
                 pass
-
 
     def exportImageStep(self):
         imageBaseFileName = os.path.basename(self.exportPicture.get())
