@@ -273,7 +273,8 @@ class ProtUnionSet(ProtSets):
         """ Check if all input sets have a minimum compatible attributes """
         # Attributes to check
         attrs = {'sampling rates': 'getSamplingRate',
-                 'dimensions': 'getDimensions'}
+                 # 'dimensions': 'getDimensions'
+                 }
         errors = []
         # For each attribute
         for key, attr in attrs.items():
